@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 async function connectToMongoDB() {
     try {
         // Connect to MongoDB
-        await mongoose.connect('mongodb://localhost:27017/dac_project', {
-            
+        await mongoose.connect('mongodb+srv://spmeshramkar:Vish19988975@cluster0.8hzdgco.mongodb.net/bill-generator', {
+            // Add connection options here if needed
         });
 
         console.log('Connected to MongoDB');

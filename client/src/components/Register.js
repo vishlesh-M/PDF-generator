@@ -1,14 +1,18 @@
 import React ,{ useState } from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 import avatar from  '../assets/avatar.jpg';
-import {Toaster} from 'react-hot-toast';
+import toast, {Toaster} from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { registerValidation } from '../helper/validate'
 import convertToBase64 from '../helper/convert'
+import { registerUser } from '../helper/helper';
+
 
 import styles from '../styles/Username.module.css'
 
 export default function Register(){
+
+    const navigate = useNavigate()
 
     const[file,setFile]= useState()
 
@@ -23,7 +27,14 @@ export default function Register(){
         validateOnChange: false,
         onSubmit : async values=>{
             values = await Object.assign(values,{profile : file || ''})
-            console.log(values)
+            let registerPromise = registerUser(values)
+            toast.promise(registerPromise,{
+                Loading:"creating...",
+                success :<b>Register Successfully...!</b>,
+                error: <b>could not register</b>
+            });
+
+            registerPromise.then(function(){navigate('/')});
         }
     })
 
@@ -56,7 +67,7 @@ export default function Register(){
                     <div className="textbox flex flex-col items-center gap-6">
                         <input {...formik.getFieldProps('email')} className={styles.testbox} type="text" placeholder='Email*'/>
                         <input {...formik.getFieldProps('username')} className={styles.testbox} type="text" placeholder='Username*'/>
-                        <input {...formik.getFieldProps('password')} className={styles.testbox} type="text" placeholder='Password*'/>
+                        <input {...formik.getFieldProps('password')} className={styles.testbox} type="password" placeholder='Password*'/>
                         <button className={styles.btn} type='submit'>Sign up</button>
                     </div>
                     <div className="text-center py-4">

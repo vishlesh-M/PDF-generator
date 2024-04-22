@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import connectToMongoDB from './database/connec.js';
 import router from './router/route.js';
+//import generatePDF from './pdf/pdfgenerating.js'
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.get('/',(req,res) => {
 app.use('/api',router)
 
 
-
+//generatePDF();
 
 /** start server only when we have valid connection */
 connectToMongoDB().then(() =>{

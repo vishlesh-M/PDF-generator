@@ -1,10 +1,16 @@
 import toast from 'react-hot-toast'
-
+import { authentication } from'./helper';
 /**validate login page username */
 
 export async function usernameValidate(values){
     const errors = usernameVerify({}, values);
-
+    if(values.username){
+        const{status} = await authentication(values.username);
+        
+        if(status !== 200){
+            errors.exist = toast.error('User doesnot exist'); 
+        }
+    }
     return errors;
 }
 
@@ -35,6 +41,13 @@ export async function registerValidation(values){
 
 }
 
+export async function profileValidate(values){
+    const errors = emailVerify({},values);
+    return errors;
+    
+}
+
+
 /** ********************************* */
 
 
@@ -43,7 +56,7 @@ export async function registerValidation(values){
 
 function passwordVerify(errors ={}, values ){
 
-    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\?~]/;
 
     if(!values.password){
         errors.password = toast.error("Password Required..!");
